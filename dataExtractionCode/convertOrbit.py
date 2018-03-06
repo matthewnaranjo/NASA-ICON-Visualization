@@ -94,10 +94,13 @@ formatting = """[{"version": "1.0", "id": "document"}, {"label": {"text": "ICON"
 orient_format = '''], "interpolationAlgorithm": "LAGRANGE"},"orientation":{"interpolationAlgorithm":"LINEAR", "interpolationDegree":1, "unitQuaternion": ['''
 final_format = ''' ]},"id": "ICON"}]'''
 
+# add tag to identify ephemeris of different czml files
+ephemTags = ['-d', '-p', '-g']
+ephemTag = ephemTags[ephemeris]
 
 #writing to file   
 name = '%s-%s_%s' % (year, num, version)
-f = open('../Documents/Cesium/Apps/ICONData/czml/' + name +'.czml', 'w')
+f = open('../Documents/Cesium/Apps/ICONData/czml/' + name + ephemTag +'.czml', 'w')
 f.write(formatting)
 for i in range(len(coords)):
 	f.write(coords[i][0:-1])
