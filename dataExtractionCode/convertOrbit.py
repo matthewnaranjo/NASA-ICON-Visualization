@@ -70,10 +70,10 @@ date = datetime.datetime.strptime(str(year) + str(num),'%Y%j').strftime('%Y-%m-%
 print('Creating czml for %s' % date)
 for i in range(len(lat)): 
 	if str(lat[i]) != '--' and str(lon[i]) != '--' and str(alt[i]) != '--':
-		position = (str(lat[i]) + ', ' + str(lon[i])+ ', ' + str(float(alt[i]) * 1000))
+		position = (str(round(lat[i],10)) + ', ' + str(round(lon[i],10))+ ', ' + str(round(float(alt[i]) * 1000, 10)))
 
 	if str(q0[i]) != '--' and str(q1[i]) != '--' and str(q2[i]) != '--' and str(q3[i]) != '--':
-		q = (str(q0[i]) + ', ' + str(q1[i]) + ', ' + str(q2[i]) + ', ' + str(q3[i]))
+		q = (str(round(q0[i], 10)) + ', ' + str(round(q1[i], 10)) + ', ' + str(round(q2[i], 10)) + ', ' + str(round(q3[i], 10)))
 
 	if str(hour[i]) != '--' and str(mins[i]) != '--' and str(sec[i]) != '--':
 		datetimes = date + 'T' + str(datetime.time(hour[i], mins[i], sec[i])) + '+00:00'
@@ -90,7 +90,7 @@ orient[0] = orient[0][1:]
 iconData.close()
 
 #formatting of the czml 
-formatting = """[{"version": "1.0", "id": "document"}, {"label": {"text": "ICON", "pixelOffset": {"cartesian2": [0.0, 16.0]}, "scale": 0.5, "show": true}, "path": {"show": true, "material": {"solidColor": {"color": {"rgba": %s}}}, "width": 2, "trailTime": 0, "resolution": 120, "leadTime": 0, "trailTime": 10000},   "model": {"gltf" : "../../SampleData/models/CesiumAir/icon_complete_lighting.glb", "scale": 15000.0, "minimumPixelSize":64, "color": {"rgba": [255, 0, 0, 125]}, "show": true}, "position": {"interpolationDegree": 5, "referenceFrame": "INTERTIAL", "cartographicDegrees": [""" % pathColor
+formatting = """[{"version": "1.0", "id": "document"}, {"label": {"text": "ICON", "pixelOffset": {"cartesian2": [0.0, 16.0]}, "scale": 0.5, "show": true}, "path": {"show": true, "material": {"solidColor": {"color": {"rgba": %s}}}, "width": 2, "trailTime": 0, "resolution": 120, "leadTime": 0, "trailTime": 10000},   "model": {"gltf" : "icon.glb", "scale": 15000.0, "minimumPixelSize":64, "color": {"rgba": [255, 0, 0, 125]}, "show": true}, "position": {"interpolationDegree": 5, "referenceFrame": "INTERTIAL", "cartographicDegrees": [""" % pathColor
 orient_format = '''], "interpolationAlgorithm": "LAGRANGE"},"orientation":{"interpolationAlgorithm":"LINEAR", "interpolationDegree":1, "unitQuaternion": ['''
 final_format = ''' ]},"id": "ICON"}]'''
 
@@ -100,10 +100,10 @@ ephemTag = ephemTags[ephemeris]
 
 #writing to file   
 name = '%s-%s_%s' % (year, num, version)
-f = open('../Documents/Cesium/Apps/ICONData/czml/' + name + ephemTag +'.czml', 'w')
+f = open('../public_html/orbitViz/ICON/ICONData/czml/' + name + ephemTag +'.czml', 'w')
 f.write(formatting)
 for i in range(len(coords)):
-	f.write(coords[i][0:-1])
+	f.write(coords[i])
 f.write(orient_format)
 for i in range(len(orient)):
 	f.write(orient[i])
